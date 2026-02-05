@@ -1,0 +1,23 @@
+urdf_1: 
+  gazebo_ros_control:
+    pid_gains:
+      limb1_to_base_link:
+        p: 1000000.0
+        i: 1000.0
+        d: 5000.0
+        i_clamp: 100.0
+      limb2_to_limb1:
+        p: 1000000.0
+        i: 1000.0
+        d: 5000.0
+        i_clamp: 100.0
+      limb3_to_limb2:
+        p: 1000000.0
+        i: 1000.0
+        d: 5000.0
+        i_clamp: 100.0
+      limb4_to_limb3:
+        p: 1000000.0
+        i: 1000.0
+        d: 5000.0
+        i_clamp: 100.0

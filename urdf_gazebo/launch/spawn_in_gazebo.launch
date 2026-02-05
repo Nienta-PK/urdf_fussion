@@ -1,0 +1,7 @@
+<launch>
+  <arg name="robot_name" default="urdf_1"/>
+
+  <node name="spawn_$(arg robot_name)" pkg="gazebo_ros" type="spawn_model" output="screen"
+        args="-param $(arg robot_name)_robot_description -urdf -model $(arg robot_name)"/>
+
+</launch>

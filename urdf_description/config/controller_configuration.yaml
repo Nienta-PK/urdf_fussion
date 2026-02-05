@@ -1,0 +1,31 @@
+joint_state_controller:
+  type: joint_state_controller/JointStateController
+  publish_rate: 100
+
+urdf_trajectory_controller:
+  type: position_controllers/JointTrajectoryController
+
+  joints:
+    - limb1_to_base_link
+    - limb2_to_limb1
+    - limb3_to_limb2
+    - limb4_to_limb3
+
+  state_publish_rate: 100 # Increased to match joint_state for better precision
+  action_monitor_rate: 20
+  stop_trajectory_duration: 1.0
+
+  gains:
+    limb1_to_base_link: {p: 1000000.0, i: 1000.0, d: 5000.0, i_clamp: 100.0}
+    limb2_to_limb1:     {p: 1000000.0, i: 1000.0, d: 5000.0, i_clamp: 100.0}
+    limb3_to_limb2:     {p: 1000000.0, i: 1000.0, d: 5000.0, i_clamp: 100.0}
+    limb4_to_limb3:     {p: 1000000.0, i: 1000.0, d: 5000.0, i_clamp: 100.0}
+
+  constraints:
+    goal_time: 1.0 # Allow up to 1 second after the time_to_reach for the limbs to settle
+    stopped_velocity_tolerance: 0.01 # Joint must be nearly still to finish
+    # Per-joint goal accuracy (in radians)
+    limb1_to_base_link: {trajectory: 0.1, goal: 0.001}
+    limb2_to_limb1:     {trajectory: 0.1, goal: 0.001}
+    limb3_to_limb2:     {trajectory: 0.1, goal: 0.001}
+    limb4_to_limb3:     {trajectory: 0.1, goal: 0.001}

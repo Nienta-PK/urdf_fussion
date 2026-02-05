@@ -1,0 +1,15 @@
+<launch>
+  <arg name="robot_name" default="urdf_1"/>
+  <arg name="robot_file" default="$(find urdf_description)/robot/URDF_Test.xacro"/>
+
+  <param name="$(arg robot_name)_robot_description" command="$(find xacro)/xacro '$(arg robot_file)'" />
+  <param name="robot_description" command="$(find xacro)/xacro $(arg robot_file)" />
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">
+    <remap from="robot_description" to="$(arg robot_name)_robot_description" />
+    <remap from="/joint_states" to="/$(arg robot_name)/joint_states" />
+    
+    <param name="publish_frequency" value="50.0" />
+    <param name="tf_prefix" value="$(arg robot_name)" />
+  </node>
+</launch> 

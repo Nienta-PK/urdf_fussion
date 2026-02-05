@@ -1,0 +1,158 @@
+<?xml version="1.0" ?>
+<robot name="URDF_Test" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find urdf_description)/robot/materials.xacro" />
+<xacro:include filename="$(find urdf_description)/robot/URDF_Test.trans" />
+<xacro:include filename="$(find urdf_description)/robot/URDF_Test.gazebo" />
+
+<link name='world'>
+</link>
+
+<link name="base_link">
+  <inertial>
+    <origin xyz="2.964491827262478e-17 0.0 0.05000000000000002" rpy="0 0 0"/>
+    <mass value="38.53359739168731"/>
+    <inertia ixx="0.182633" iyy="0.182633" izz="0.301044" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://urdf_test_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="red"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://urdf_test_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="limb1_1">
+  <inertial>
+    <origin xyz="0.07596584270604206 0.0 0.10808604564797245" rpy="0 0 0"/>
+    <mass value="114.19413894300712"/>
+    <inertia ixx="0.899018" iyy="1.341251" izz="1.334375" ixy="-0.0" iyz="0.0" ixz="-0.18752"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.0 -0.0 -0.1" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://urdf_test_description/meshes/limb1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="green"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.0 -0.0 -0.1" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://urdf_test_description/meshes/limb1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="limb2_1">
+  <inertial>
+    <origin xyz="0.11659479086873878 -1.988425662600658e-17 0.22639816644090358" rpy="0 0 0"/>
+    <mass value="229.79493111806912"/>
+    <inertia ixx="7.789902" iyy="7.813213" izz="1.818584" ixy="-0.0" iyz="-0.0" ixz="-0.478076"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.225 -0.0 -0.225" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://urdf_test_description/meshes/limb2_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="blue"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.225 -0.0 -0.225" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://urdf_test_description/meshes/limb2_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="limb3_1">
+  <inertial>
+    <origin xyz="-0.0759658427060419 8.00268984730937e-17 0.10808604564797264" rpy="0 0 0"/>
+    <mass value="114.19413894300706"/>
+    <inertia ixx="0.899018" iyy="1.341251" izz="1.334375" ixy="0.0" iyz="0.0" ixz="0.18752"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.35 -0.0 -0.75" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://urdf_test_description/meshes/limb3_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="yellow"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.35 -0.0 -0.75" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://urdf_test_description/meshes/limb3_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="limb4_1">
+  <inertial>
+    <origin xyz="-0.10808604564797243 -8.002689847309363e-17 0.07596584270604212" rpy="0 0 0"/>
+    <mass value="114.19413894300716"/>
+    <inertia ixx="1.334375" iyy="1.341251" izz="0.899018" ixy="0.0" iyz="0.0" ixz="0.18752"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.125 -0.0 -0.875" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://urdf_test_description/meshes/limb4_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="white"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.125 -0.0 -0.875" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://urdf_test_description/meshes/limb4_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="base_link_to_world" type="fixed">
+  <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+  <parent link="world"/>
+  <child link="base_link"/>
+</joint>
+
+<joint name="limb1_to_base_link" type="continuous">
+  <origin xyz="0.0 0.0 0.1" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="limb1_1"/>
+  <axis xyz="0.0 0.0 1.0"/>
+  <limit effort="40000" velocity="1.5" lower="-1.57" upper="1.57"/>
+  <dynamics damping="20.0" friction="1.0"/>
+</joint>
+
+<joint name="limb2_to_limb1" type="continuous">
+  <origin xyz="0.225 0.0 0.125" rpy="0 0 0"/>
+  <parent link="limb1_1"/>
+  <child link="limb2_1"/>
+  <axis xyz="1.0 0.0 0.0"/>
+  <limit effort="40000" velocity="1.5" lower="-1.57" upper="1.57"/>
+  <dynamics damping="20.0" friction="1.0"/>
+</joint>
+
+<joint name="limb3_to_limb2" type="continuous">
+  <origin xyz="0.125 0.0 0.525" rpy="0 0 0"/>
+  <parent link="limb2_1"/>
+  <child link="limb3_1"/>
+  <axis xyz="0.0 0.0 1.0"/>
+  <limit effort="40000" velocity="1.5" lower="-1.57" upper="1.57"/>
+  <dynamics damping="20.0" friction="1.0"/>
+</joint>
+
+<joint name="limb4_to_limb3" type="continuous">
+  <origin xyz="-0.225 0.0 0.125" rpy="0 0 0"/>
+  <parent link="limb3_1"/>
+  <child link="limb4_1"/>
+  <axis xyz="-1.0 0.0 0.0"/>
+  <limit effort="40000" velocity="1.5" lower="-1.57" upper="1.57"/>
+  <dynamics damping="20.0" friction="1.0"/>
+</joint>
+
+</robot>

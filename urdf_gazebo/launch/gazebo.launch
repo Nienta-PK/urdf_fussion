@@ -1,0 +1,79 @@
+<launch>
+
+  <!-- ===================== -->
+  <!-- Arguments -->
+  <!-- ===================== -->
+  <arg name="robot_name" default="urdf_1"/>
+  <arg name="world_name" default="$(find gazebo_ros)/worlds/empty.world"/>
+  <arg name="robot_file" default="$(find urdf_description)/robot/URDF_Test.xacro"/>
+
+  <arg name="use_gui" default="true"/>
+  <arg name="use_sim_time" default="false"/>
+  <arg name="paused" default="false"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+
+  <!-- ===================== -->
+  <!-- Use simulation time -->
+  <!-- ===================== -->
+  <param name="use_sim_time" value="$(arg use_sim_time)"/>
+
+  <!-- ===================== -->
+  <!-- Gazebo server -->
+  <!-- ===================== -->
+  <node name="gazebo"
+        pkg="gazebo_ros"
+        type="gazebo"
+        output="screen"
+        args="-s libgazebo_ros_factory.so
+              $(arg world_name)">
+    <param name="paused" value="$(arg paused)"/>
+    <param name="use_sim_time" value="$(arg use_sim_time)"/>
+    <param name="gui" value="$(arg gui)"/>
+    <param name="headless" value="$(arg headless)"/>
+    <param name="debug" value="$(arg debug)"/>
+  </node>
+
+  <!-- ===================== -->
+  <!-- Robot description -->
+  <!-- ===================== -->
+  <param name="$(arg robot_name)_robot_description"
+         command="$(find xacro)/xacro $(arg robot_file)"/>
+
+  <!-- ===================== -->
+  <!-- Robot State Publisher -->
+  <!-- ===================== -->
+  <node name="$(arg robot_name)_robot_state_publisher"
+        pkg="robot_state_publisher"
+        type="robot_state_publisher"
+        output="screen">
+    <param name="publish_frequency" value="50"/>
+    <remap from="robot_description"
+           to="$(arg robot_name)_robot_description"/>
+  </node>
+
+  <!-- ===================== -->
+  <!-- Joint State Publisher (GUI optional) -->
+  <!-- ===================== -->
+  <node name="joint_state_publisher"
+        pkg="joint_state_publisher"
+        type="joint_state_publisher"
+        output="screen">
+    <param name="use_gui" value="$(arg use_gui)"/>
+    <remap from="robot_description"
+           to="$(arg robot_name)_robot_description"/>
+  </node>
+
+  <!-- ===================== -->
+  <!-- Spawn robot in Gazebo -->
+  <!-- ===================== -->
+  <node name="spawn_$(arg robot_name)"
+        pkg="gazebo_ros"
+        type="spawn_model"
+        output="screen"
+        args="-urdf
+              -param $(arg robot_name)_robot_description
+              -model $(arg robot_name)" />
+    
+</launch>

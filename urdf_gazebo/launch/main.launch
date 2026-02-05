@@ -1,0 +1,50 @@
+<launch>
+
+  <!-- ===================== -->
+  <!-- Arguments -->
+  <!-- ===================== -->
+  <arg name="robot_name" default="urdf_1"/>
+  <arg name="robot_file" default="$(find urdf_description)/robot/URDF_Test.xacro"/>
+  <arg name="world_name" value="$(find urdf_description)/worlds/precision.world"/>
+
+  <arg name="use_gui" value="false"/>
+
+  <!-- ===================== -->
+  <!-- Start Gazebo world -->
+  <!-- ===================== -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(arg world_name)"/> 
+    <arg name="paused" value="true"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <!-- ===================== -->
+  <!-- Spawn robot in Gazebo -->  
+  <!-- ===================== -->
+  <include file="$(find urdf_gazebo)/launch/robot_state_publisher.launch">
+    <arg name="robot_name" value="$(arg robot_name)"/>
+    <arg name="robot_file" value="$(arg robot_file)"/>
+  </include>
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="use_gui" value="$(arg use_gui)"/>
+    <remap from="robot_description" to="$(arg robot_name)_robot_description" />
+  </node>
+
+  <rosparam file="$(find urdf_description)/config/gazebo_pid.yaml" command="load"/>
+
+  <node name="spawn_$(arg robot_name)" pkg="gazebo_ros" type="spawn_model" output="screen"
+        args="-param $(arg robot_name)_robot_description -urdf -model $(arg robot_name)"/>
+
+  <!-- ===================== -->  
+  <!-- Start controllers     -->
+  <!-- ===================== -->
+  
+  <include file="$(find urdf_gazebo)/launch/start_control.launch">
+    <arg name="robot_name" value="$(arg robot_name)"/>
+  </include>
+  
+</launch>
